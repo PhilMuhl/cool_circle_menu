@@ -11,9 +11,9 @@ class CircleMenu extends StatefulWidget {
 }
 
 class _CircleMenuState extends State<CircleMenu> with TickerProviderStateMixin {
-  AnimationController _animationController;
-  Animation<double> _exitButtonSizeAnimation;
-  Animation<double> _rotationAnimation;
+  AnimationController? _animationController;
+  Animation<double>? _exitButtonSizeAnimation;
+  Animation<double>? _rotationAnimation;
 
   final double size = 200;
 
@@ -27,22 +27,22 @@ class _CircleMenuState extends State<CircleMenu> with TickerProviderStateMixin {
       begin: 0,
       end: 26,
     ).animate(CurvedAnimation(
-        parent: _animationController,
+        parent: _animationController!,
         curve: Interval(0.0, 0.5, curve: Curves.easeOut)));
 
     _rotationAnimation = Tween<double>(
       begin: math.pi,
       end: 0.0,
     ).animate(CurvedAnimation(
-        parent: _animationController,
+        parent: _animationController!,
         curve: Interval(0.2, 1.0, curve: Curves.easeOut)));
 
-    _animationController.forward();
+    _animationController?.forward();
   }
 
   @override
   void dispose() {
-    _animationController.dispose();
+    _animationController?.dispose();
     super.dispose();
   }
 
@@ -52,13 +52,13 @@ class _CircleMenuState extends State<CircleMenu> with TickerProviderStateMixin {
       width: size + 38,
       height: size + 38,
       child: AnimatedBuilder(
-        animation: _animationController,
+        animation: _animationController!,
         builder: (context, child) {
           return Stack(
             alignment: Alignment.center,
             children: [
               Transform.scale(
-                scale: _animationController.value,
+                scale: _animationController!.value,
                 child: Container(
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
@@ -68,7 +68,7 @@ class _CircleMenuState extends State<CircleMenu> with TickerProviderStateMixin {
                     width: size),
               ),
               Transform.scale(
-                scale: _animationController.value,
+                scale: _animationController!.value,
                 child: Center(
                   child: Container(
                     decoration: BoxDecoration(
@@ -81,7 +81,7 @@ class _CircleMenuState extends State<CircleMenu> with TickerProviderStateMixin {
                 ),
               ),
               Transform.scale(
-                scale: _animationController.value,
+                scale: _animationController!.value,
                 child: Center(
                   child: Container(
                     decoration: BoxDecoration(
@@ -93,7 +93,7 @@ class _CircleMenuState extends State<CircleMenu> with TickerProviderStateMixin {
                     padding: const EdgeInsets.all(2.0),
                     child: IconButton(
                       icon: Icon(Icons.clear_rounded),
-                      iconSize: _exitButtonSizeAnimation.value,
+                      iconSize: _exitButtonSizeAnimation!.value,
                       color: Colors.blue,
                       onPressed: () {
                         close();
@@ -103,7 +103,7 @@ class _CircleMenuState extends State<CircleMenu> with TickerProviderStateMixin {
                 ),
               ),
               Transform.rotate(
-                angle: _rotationAnimation.value,
+                angle: _rotationAnimation!.value,
                 child: Stack(
                   children: [
                     _buildOption(Icons.check_circle, math.pi, Colors.blue),
@@ -127,7 +127,7 @@ class _CircleMenuState extends State<CircleMenu> with TickerProviderStateMixin {
 
   Widget _buildOption(IconData icon, double angle, Color color) {
     return Transform.scale(
-      scale: _animationController.value,
+      scale: _animationController!.value,
       child: Transform.rotate(
         angle: angle,
         child: Align(
@@ -163,7 +163,7 @@ class _CircleMenuState extends State<CircleMenu> with TickerProviderStateMixin {
   }
 
   void close() async {
-    await _animationController.reverse();
+    await _animationController!.reverse();
     widget.closeCallback();
   }
 }
